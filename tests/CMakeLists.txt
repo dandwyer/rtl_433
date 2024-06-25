@@ -38,6 +38,26 @@ add_test(flex_decoder bash -c
     ../src/rtl_433 \
         -X n=name,m=FSK_PCM,s=10,l=10,r=10240 \
         -r empty_file.cu8")
+add_test(badger_decoder bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223 \
+        -r empty_file.cu8")
+add_test(badger_decoder_verbose bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223:v \
+        -r empty_file.cu8")
+add_test(badger_decoder_id bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223:1601937 \
+        -r empty_file.cu8")
+add_test(badger_decoder_verbose_id bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223:vv,1601937 \
+        -r empty_file.cu8")
 
 ########################################################################
 # Define style checks
