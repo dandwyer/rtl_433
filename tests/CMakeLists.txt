@@ -51,6 +51,26 @@ add_test(flex_decoder_w_getter_and_format_specifier bash -c
     ../src/rtl_433 \
         -X 'n=name,m=FSK_PCM,s=10,l=10,r=10240,get=@2:{32}:code:%x' \
         -r empty_file.cu8")
+add_test(badger_decoder bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223 \
+        -r empty_file.cu8")
+add_test(badger_decoder_verbose bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223:v \
+        -r empty_file.cu8")
+add_test(badger_decoder_id bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223:1601937 \
+        -r empty_file.cu8")
+add_test(badger_decoder_verbose_id bash -c
+    "touch empty_file.cu8 && \
+    ../src/rtl_433 \
+        -R 223:vv,1601937 \
+        -r empty_file.cu8")
 
 # Black-box test of the HTTP/WS API server. Starts rtl_433 in manual device
 # mode (no SDR), exercises each endpoint, and shuts it down cleanly. Skipped
