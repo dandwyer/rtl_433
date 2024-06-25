@@ -10,6 +10,9 @@
 */
 
 #include "decoder.h"
+#include "rtl_433_devices.h"
+
+#include <stdlib.h>
 
 /** @fn static int badger_orion_decode(r_device *decoder, bitbuffer_t *bitbuffer)
 Badger ORION water meter.
@@ -40,6 +43,10 @@ Once the data has been decoded with the NRZ 6:4 decoding, it has the following f
 - CRC: 2 bytes, crc16, polynomial 0x3D65
 
 */
+
+typedef struct user_data {
+    uint32_t desired_device_id; // Filter on device ID unless zeroed
+} user_data_struct;
 
 // Mapping from 6 bits to 4 bits. "3of6" coding used for Mode T
 static uint8_t badger_decode_3of6(uint8_t byte)
@@ -122,6 +129,13 @@ static int badger_orion_decode(r_device *decoder, bitbuffer_t *bitbuffer)
     uint32_t volume = data_in[4] | (data_in[5] << 8) | (data_in[6] << 16);
     uint8_t flags_2 = data_in[7];
 
+    user_data_struct *user_data = decoder_user_data(decoder);
+    if ((user_data->desired_device_id != 0) && (user_data->desired_device_id != device_id)) {
+        decoder_logf(decoder, 1, __func__,
+                "DECODE_FAIL_SANITY due to unexpected device ID: %d", device_id);
+        return DECODE_FAIL_SANITY;
+    }
+
     /* clang-format off */
     data = data_make(
             "model",      "",          DATA_STRING, "Badger-ORION",
@@ -148,6 +162,26 @@ static char const *const badger_output_fields[] = {
         NULL,
 };
 
+static r_device *badger_orion_create(char const *arg)
+{
+    user_data_struct *user_data = NULL;
+    r_device *r_dev = decoder_create(&badger_orion, sizeof(*user_data));
+    if (!r_dev) {
+        return NULL; // NOTE: returns NULL on alloc failure.
+    }
+
+    user_data = decoder_user_data(r_dev);
+
+    if (arg == NULL) {
+        user_data->desired_device_id = 0;
+    }
+    else
+    {
+        user_data->desired_device_id = strtoul(arg, NULL, 10);
+    }
+    return r_dev;
+}
+
 // Badger ORION water meter,
 // Frequency 916.45 MHz, Bitrate 100 kbps, Modulation NRZ FSK
 r_device const badger_orion = {
@@ -156,6 +190,7 @@ r_device const badger_orion = {
         .short_width = 10,   // Bit rate: 100 kb/s
         .long_width  = 10,   // NRZ encoding (bit width = pulse width)
         .reset_limit = 1000, //
+        .create_fn   = &badger_orion_create,
         .decode_fn   = &badger_orion_decode,
         .fields      = badger_output_fields,
 };
