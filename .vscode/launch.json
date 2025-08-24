@@ -1,0 +1,79 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Launch (live-RF)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/rtl_433",
+            "args": [
+                "-f", "916.45M",
+                "-g", "49.6",
+                "-R", "223:v,1601937",
+                "-s", "1200k",
+                "-S", "known",
+                "-Y", "minlevel=-25",
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                //{
+                //    "description": "Set Disassembly Flavor to Intel",
+                //    "text": "-gdb-set disassembly-flavor intel",
+                //    "ignoreFailures": true
+                //}
+            ]
+        },
+        {
+            "name": "(gdb) Launch (canned-samples)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/rtl_433",
+            "args": [
+                "-vv",
+                "-r", "~/samples/g796_916.45M_1200k.cu8",
+                "-X", "n=one,m=FSK_PCM,s=10,l=10,r=10240",
+                //"-R", "0",
+                ////"-X", "n=two,m=FSK_PCM,s=10,l=10,r=1000",
+                //"-Y", "minlevel=-15",
+                ////"-f", "916.45M",
+                ////"-g", "49.6",
+                //"-R", "223",
+                //"-R", "223:vvvvvv,1601937",
+                ////"-s", "1200k",
+                ////"-S", "known",
+                ////"-Y", "minlevel=-25",
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [
+                {"name": "LSAN_OPTIONS", "value": "verbosity=1:log_threads=1"},
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                //{
+                //    "description": "Set Disassembly Flavor to Intel",
+                //    "text": "-gdb-set disassembly-flavor intel",
+                //    "ignoreFailures": true
+                //}
+            ]
+        }
+    ]
+}
