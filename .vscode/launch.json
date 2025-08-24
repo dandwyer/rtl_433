@@ -1,0 +1,70 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Launch (live-RF)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/rtl_433",
+            "args": [
+                "-f", "916.45M",
+                "-g", "49.6",
+                "-R", "223:v,1601937",
+                "-s", "1200k",
+                "-S", "known",
+                "-Y", "minlevel=-25",
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                //{
+                //    "description": "Set Disassembly Flavor to Intel",
+                //    "text": "-gdb-set disassembly-flavor intel",
+                //    "ignoreFailures": true
+                //}
+            ]
+        },
+        {
+            "name": "(gdb) Launch (canned-samples)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/rtl_433",
+            "args": [
+                "-r", "${workspaceFolder}/rtl_433_tests/tests/dsc/01/gfile001.cu8",
+                "-R", "23",
+                "-vv",
+                "-X", "n=DSC,m=OOK_RZ,s=250,l=500,r=5000,get=@4:{8}:status,get=@10:{1}:closed:%d,get=@8:{1}:Battery:[0:1 1:0]",
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [
+                {"name": "LSAN_OPTIONS", "value": "verbosity=1:log_threads=1"},
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                //{
+                //    "description": "Set Disassembly Flavor to Intel",
+                //    "text": "-gdb-set disassembly-flavor intel",
+                //    "ignoreFailures": true
+                //}
+            ]
+        }
+    ]
+}

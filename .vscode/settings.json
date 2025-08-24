@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "decoder.h": "c",
+        "logger.h": "c",
+        "decoder_util.h": "c",
+        "pulse_data.h": "c",
+        "list.h": "c",
+        "typeinfo": "c",
+        "output_file.h": "c",
+        "flex.h": "c",
+        "stdlib.h": "c",
+        "rtl_433_devices.h": "c"
+    }
+}
