@@ -74,15 +74,19 @@ Get the `rtl_433` git repository if needed:
 Installation using CMake and Make (commonly available):
 
     cd rtl_433/
-    cmake -B build
+    cmake -B build -DCMAKE_INSTALL_PREFIX=~/.local
     cmake --build build --target install
 
 Installation using CMake and Ninja (newer and faster):
 
     cd rtl_433/
-    cmake -DFORCE_COLORED_BUILD:BOOL=ON -GNinja -B build
-    cmake --build build -j 4
-    cmake --build build --target install
+    cmake -GNinja -B build \
+        -DBUILD_TESTING_ANALYZER=ON \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_INSTALL_PREFIX=~/.local \
+        -DFORCE_COLORED_BUILD:BOOL=ON \
+    cmake --build build -j $(nproc)
+    cmake --build build -j $(nproc) --target install
 
 If installing to a global prefix (e.g. the default `/usr/local`) then instead run `make install` with privileges, .i.e.
 
