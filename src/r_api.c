@@ -276,8 +276,13 @@ void register_protocol(r_cfg_t *cfg, r_device const *r_dev, char *arg)
 
 void free_protocol(r_device *r_dev)
 {
+    if (r_dev->destroy_fn) {
+        r_dev->destroy_fn(r_dev);
+    }
+    else {
     free(r_dev->decode_ctx);
     free(r_dev);
+    }
 }
 
 void unregister_protocol(r_cfg_t *cfg, r_device *r_dev)
